@@ -4,12 +4,14 @@ import datetime as dt
 import numpy as np
 import scipy.cluster.hierarchy as spc
 from sklearn.cluster import KMeans
+from mi_test import calc_MI
 
 n_groups = [3, 4, 5, 6]
 
 # tickers = ['AAPL',  'MSFT', 'DPZ', 'CMG', 'EGIE3.SA']
-tickers = [ 'SLCE3.SA',
-            'ITUB3.SA',
+tickers = [ 'ITUB3.SA',
+            'FLRY3.SA',
+            'SLCE3.SA',
             'ITSA3.SA',
             'KLBN4.SA',
             'WEGE3.SA',
@@ -21,11 +23,9 @@ tickers = [ 'SLCE3.SA',
             'ABEV3.SA',
             'VIVA3.SA',
             'YDUQ3.SA',
-            'PETZ3.SA',
             'TOTS3.SA',
             'SQIA3.SA',
             'LOGG3.SA',
-            'FLRY3.SA',
             'RADL3.SA'
             ]
 
@@ -39,12 +39,11 @@ data = data['Adj Close']
 data = data.resample('M').last()
 
 log_returns = np.log(data / data.shift())[1:]
+print(log_returns)
 
-# print(log_returns)
-corr_pd = log_returns.corr()
-print(corr_pd)
-corr = corr_pd.values
-
+# corr_pd = log_returns.corr()
+# print(corr_pd)
+# corr = corr_pd.values
 
 
 for ng in n_groups:
