@@ -1,7 +1,7 @@
 import numpy as np
 #from sklearn.metrics.cluster import  normalized_mutual_info_score
 from sklearn.metrics.cluster import adjusted_mutual_info_score, mutual_info_score
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 
 
 def calc_MI(x, y, bins=10):

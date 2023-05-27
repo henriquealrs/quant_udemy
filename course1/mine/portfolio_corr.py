@@ -5,38 +5,40 @@ import numpy as np
 import scipy.cluster.hierarchy as spc
 from sklearn.cluster import KMeans
 from mi_test import calc_MI
+from utils.load_data import download_data
 
 n_groups = [3, 4, 5, 6]
 
-# tickers = ['AAPL',  'MSFT', 'DPZ', 'CMG', 'EGIE3.SA']
-tickers = [ 'ITUB3.SA',
-            'FLRY3.SA',
-            'SLCE3.SA',
-            'ITSA3.SA',
-            'KLBN4.SA',
-            'WEGE3.SA',
-            'EGIE3.SA',
-            'B3SA3.SA',
-            'AGRO3.SA',
-            'ARZZ3.SA',
-            'LEVE3.SA',
-            'ABEV3.SA',
-            'VIVA3.SA',
-            'YDUQ3.SA',
-            'TOTS3.SA',
-            'SQIA3.SA',
-            'LOGG3.SA',
-            'RADL3.SA'
-            ]
+tickers = ['AAPL',  'MSFT', 'DPZ', 'CMG', 'EGIE3.SA']
+# tickers = [ 'ITUB3.SA',
+#             'FLRY3.SA',
+#             'SLCE3.SA',
+#             'ITSA3.SA',
+#             'KLBN4.SA',
+#             'WEGE3.SA',
+#             'EGIE3.SA',
+#             'B3SA3.SA',
+#             'AGRO3.SA',
+#             'ARZZ3.SA',
+#             'LEVE3.SA',
+#             'ABEV3.SA',
+#             'VIVA3.SA',
+#             'YDUQ3.SA',
+#             'TOTS3.SA',
+#             'SQIA3.SA',
+#             'LOGG3.SA',
+#             'RADL3.SA'
+#             ]
 
 # ['AAPL',  'MSFT', 'DPZ', 'CMG', 'EGIE3.SA']
 
-start = dt.datetime(2020, 1, 1)
+start = dt.datetime(2020, 1, 1).strftime("%Y-%m-%d")
 
-data = pdr.get_data_yahoo(tickers, start)
-data = data['Adj Close']
-
-data = data.resample('M').last()
+# data = pdr.get_data_yahoo(tickers, start)
+# data = data['Adj Close']
+data = download_data(tickers, start)
+data.head()
+# data = data.resample('M').last()
 
 log_returns = np.log(data / data.shift())[1:]
 print(log_returns)
