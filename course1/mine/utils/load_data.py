@@ -37,8 +37,10 @@ def download_data(stocks_list: list, start_date: str, no_workers: int=4) -> pd.D
         q.put(stock)
 
     workers = [Worker(q, start_date, end_date) for _ in range(no_workers)]
-    [w.run() for w in workers]
-    [w.join() for w in workers]
+    for w in workers:
+        w.start()
+    for w in workers:
+        w.join()
     print("All joined")
     d = {}
     for w in workers:

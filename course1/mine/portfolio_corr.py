@@ -9,7 +9,7 @@ from utils.load_data import download_data
 
 n_groups = [3, 4, 5, 6]
 
-tickers = ['AAPL',  'MSFT', 'DPZ', 'CMG', 'EGIE3.SA']
+tickers = ['AAPL',  'MSFT', 'DPZ', 'CMG']
 # tickers = [ 'ITUB3.SA',
 #             'FLRY3.SA',
 #             'SLCE3.SA',
@@ -37,9 +37,10 @@ start = dt.datetime(2020, 1, 1).strftime("%Y-%m-%d")
 # data = pdr.get_data_yahoo(tickers, start)
 # data = data['Adj Close']
 data = download_data(tickers, start)
-data.head()
+print("Load finished")
+print(data.tail())
+exit()
 # data = data.resample('M').last()
-
 log_returns = np.log(data / data.shift())[1:]
 print(log_returns)
 
