@@ -13,7 +13,7 @@ def prinf_diag_diff(m: np.ndarray):
     pretty_print(thresh(a))
 
 def print_MI(mat, labels):
-    s = "\t\t"
+    s = "\t  "
     # tab = '\t'
     for l in labels:
         s += "{}{}".format('   ', l)

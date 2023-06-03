@@ -4,12 +4,10 @@ import datetime as dt
 import numpy as np
 import scipy.cluster.hierarchy as spc
 from sklearn.cluster import KMeans
-from mi_test import calc_MI
 from utils.load_data import download_data
 from sklearn.feature_selection import mutual_info_regression
-from utils.print import * # pretty_print, prinf_diag_diff
-from pyinform.mutualinfo import mutual_info
-
+from utils.print import print_MI # pretty_print, prinf_diag_diff
+from mi_test import calc_MI
 
 n_groups_arr = [3, 4, 5, 6]
 N_GROUPS = 4
@@ -33,6 +31,7 @@ tickers = ['ITUB3.SA',
              # 'TOTS3.SA',
              # 'SQIA3.SA',
              # 'LOGG3.SA',
+           'HYPE3.SA',
            'RADL3.SA'
            ]
 
@@ -40,28 +39,30 @@ tickers = ['ITUB3.SA',
 
 start = dt.datetime(2020, 1, 1).strftime("%Y-%m-%d")
 
-# data = pdr.get_data_yahoo(tickers, start)
-# data = data['Adj Close']
 data: pd.DataFrame = download_data(tickers, start)
 
-# data = data.resample('M').last()
 log_returns = np.log(data / data.shift())[1:]
-
-# mi = mutual_info_regression(log_returns.iloc[:,0].values.reshape(-1,1), log_returns.iloc[:,1].values)
-# print(f"Mutual information: {mi}")
-
 
 n_cols = len(log_returns.columns)
 mutual_info_matrix = np.zeros((n_cols, n_cols))
+
+# test_var = log_returns.iloc[:, 2].values.reshape(-1,1)[:,0]
+# print(np.ascontiguousarray(test_var, dtype=np.int32))
+
 for i in range(n_cols):
     for j in range(n_cols):
-        # if i == j:
-        #     mutual_info_matrix[i][j] = 9999
-        #     continue
-        mutual_info_matrix[i,j] = mutual_info_regression(log_returns.iloc[:, i].values.reshape(-1,1), log_returns.iloc[:,j].values)
-print_MI(mutual_info_matrix, tickers)
+        # mutual_info_matrix[i, j] = mutual_info_regression(
+        #         log_returns.iloc[:, i].to_frame(),
+        #         log_returns.iloc[:, j].to_frame(),
+        #         discrete_features=[False]
+        mutual_info_matrix[i, j] = calc_MI(log_returns.iloc[:, i].values,
+                           log_returns.iloc[:, j].values,
+                            bins=32)
+
+
+# print_MI(mutual_info_matrix, tickers)
 # pretty_print(mutual_info_matrix)
-print(type(mutual_info_matrix))
+print_MI(mutual_info_matrix, tickers)
 exit()
 
 for ng in n_groups:
